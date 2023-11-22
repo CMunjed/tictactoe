@@ -83,20 +83,20 @@ export default App;
 //import './App.css';
 import React, { useState, useEffect } from 'react';
 import Game from './components/Game.jsx';
+//import NewGame from './components/NewGame.jsx';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
+  /*const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
     fetch('/api/time').then(res => res.json()).then(data => {
       setCurrentTime(data.time);
     });
-  }, []);
+  }, []);*/
 
-
+  //<p style={{color: 'white', textAlign: 'center'}}>The current time is {currentTime}.</p>
   return (
     <div>
-      <p style={{color: 'white', textAlign: 'center'}}>The current time is {currentTime}.</p>
       <Game />
     </div>
   );

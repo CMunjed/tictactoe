@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import './Game.css';
 import circle_icon from '../assets/o.png';
 import cross_icon from '../assets/x.png';
+import { FaUndoAlt } from "react-icons/fa";
 
 let data = ["", "", "", "", "", "", "", "", ""];
 
@@ -65,21 +66,29 @@ const Game = () => {
         }
     }
 
+    const reset = () => {
+        setLock(false);
+        data = ["", "", "", "", "", "", "", "", ""];
+        gameOverMessage.current.innerHTML = ``;
+        setCount(0);
+        //gameOverMessage = null;
+    }
+
     return (
         <div className='container'>
-            <h1 className='title'>Tic Tac Toe!</h1>
+            <h1 className='title'>Tic&nbsp;<span>Tac</span>&nbsp;Toe!</h1>
             <div className="board">
-                <div className="row1">
+                <div className="row">
                     <div className="box" onClick={(e)=>{toggle(e,0)}}></div>
                     <div className="box" onClick={(e)=>{toggle(e,1)}}></div>
                     <div className="box" onClick={(e)=>{toggle(e,2)}}></div>
                 </div>
-                <div className="row1">
+                <div className="row">
                     <div className="box" onClick={(e)=>{toggle(e,3)}}></div>
                     <div className="box" onClick={(e)=>{toggle(e,4)}}></div>
                     <div className="box" onClick={(e)=>{toggle(e,5)}}></div>
                 </div>
-                <div className="row1">
+                <div className="row">
                     <div className="box" onClick={(e)=>{toggle(e,6)}}></div>
                     <div className="box" onClick={(e)=>{toggle(e,7)}}></div>
                     <div className="box" onClick={(e)=>{toggle(e,8)}}></div>
@@ -88,7 +97,8 @@ const Game = () => {
             <div className="messageSpace">
                 <h2 ref={gameOverMessage}></h2>
             </div>
-            <button className="reset">Reset</button>
+            <button className="bottomButton undo"><span><FaUndoAlt /></span> Undo</button>
+            <button className="bottomButton reset" onClick={()=>{reset()}}>Reset</button>
         </div>
     );
 }

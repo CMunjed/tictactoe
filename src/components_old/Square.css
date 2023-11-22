@@ -1,0 +1,26 @@
+/*Copied from Game.css*/
+
+.box {
+    display: flex;
+    height: 180px;
+    width: 180px;
+    background: #3f4756;
+    border: 4px solid #282c34;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.box img {
+    padding:30px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.box img .circle {
+    display: none;
+}
+
+.cross {
+    display: none;
+}
