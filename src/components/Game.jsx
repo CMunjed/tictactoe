@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import Board from "./Board";
+import GameOver from "./GameOver";
+import GameState from "./GameState";
+import Reset from "./Reset";
+import Undo from "./Undo";
 
 const PLAYER_X = "X";
 const PLAYER_O = "O";
@@ -22,7 +26,7 @@ const winningCombos = [
 ];
 
 //Function to check if someone has won
-function checkWinner(squares, setStrikeClass) {
+function checkWinner(squares, setStrikeClass, setGameState) {
     for (const {combo, strikeClass} of winningCombos) {
         const squareValue1 = squares[combo[0]];
         const squareValue2 = squares[combo[1]];
@@ -30,8 +34,21 @@ function checkWinner(squares, setStrikeClass) {
 
         if (squareValue1 !== null && squareValue1 === squareValue2 && squareValue2 === squareValue3) {
             setStrikeClass(strikeClass);
+            if (squareValue1 === PLAYER_X) {
+                setGameState(GameState.playerXWins);
+            }
+            else {
+                setGameState(GameState.playerOWins);
+            }
+            return;
         }
     }
+
+    const allSquaresAreFilled = squares.every((square) => square !== null);
+    if (allSquaresAreFilled) {
+        setGameState(GameState.draw);
+    } 
+
 }
 
 function Game() {
@@ -44,8 +61,16 @@ function Game() {
     //Var to store strike-through class
     const [strikeClass, setStrikeClass] = useState();
 
+    //Var to store game state
+    const [gameState, setGameState] = useState(GameState.inProgress);
+
     //Handle when a square is clicked
     const handleClick = (index) => {
+        //If game is not in progress, return
+        if (gameState !== GameState.inProgress) {
+            return;
+        }
+
         //If the square is already occupied, ignore click
         if (squares[index] !== null) {
             return;
@@ -66,7 +91,7 @@ function Game() {
 
     //
     useEffect(() => {
-        checkWinner(squares, setStrikeClass);
+        checkWinner(squares, setStrikeClass, setGameState);
     }, [squares]);
 
     return (
@@ -78,6 +103,11 @@ function Game() {
             onSquareClick={handleClick}
             strikeClass={strikeClass}
             />
+            <GameOver gameState={gameState}/>
+            <div className="buttonSection">
+                <Undo/>
+                <Reset/>
+            </div>
         </div>
     );
 }
