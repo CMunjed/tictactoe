@@ -1,8 +1,8 @@
 import { FaUndoAlt } from "react-icons/fa";
 
-function Undo() {
+function Undo({ onUndo }) {
     return (
-        <div className="bottomButton undo">
+        <div onClick={onUndo} className="bottomButton undo">
         <span><FaUndoAlt/></span>
         &nbsp;Undo
         </div>);

@@ -73,6 +73,8 @@ body {
   width: 500px;
   display: flex;
   flex-direction: column;
+  /*Figure out padding to make it
+  not take the entire screen width*/
   margin: auto;
   justify-content: center;
   /*Added this to fix board bounding box and strike*/
@@ -207,8 +209,12 @@ body {
   background: #3f4756;
   font-size: 30px;
   font-weight: bold;
-  margin-top: 15px;
+  margin-top: 25px;
   margin-bottom: 30px;
+}
+
+.bottomButton:hover {
+  background: #3b4352;
 }
 
 .reset {

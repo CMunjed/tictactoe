@@ -1,5 +1,9 @@
-function Reset() {
-    return (<div className="bottomButton reset">Reset</div>);
+function Reset({ onReset }) {
+    return (
+        <div className="bottomButton reset" onClick={onReset}>
+            Reset
+        </div>
+    );
 }
 
 export default Reset;

@@ -44,6 +44,7 @@ function checkWinner(squares, setStrikeClass, setGameState) {
         }
     }
 
+    //Check for draw
     const allSquaresAreFilled = squares.every((square) => square !== null);
     if (allSquaresAreFilled) {
         setGameState(GameState.draw);
@@ -63,6 +64,9 @@ function Game() {
 
     //Var to store game state
     const [gameState, setGameState] = useState(GameState.inProgress);
+
+    //Var to store previous moves
+    const [previousMoves, setPreviousMoves] = useState([]);
 
     //Handle when a square is clicked
     const handleClick = (index) => {
@@ -87,9 +91,58 @@ function Game() {
         else {
             setPlayerTurn(PLAYER_X);
         }
+
+        //Update previous moves list
+        const newPrev = [...previousMoves];
+        newPrev[previousMoves.length] = index;
+        setPreviousMoves(newPrev);
     }
 
-    //
+    //Function to handle the reset button
+    const handleReset = () => {
+        setGameState(GameState.inProgress);
+        setSquares(Array(9).fill(null));
+        setPlayerTurn(PLAYER_X);
+        setStrikeClass(null);
+    }
+
+    //Function to handle the undo button
+    const handleUndo = () => {
+        //If no previous moves, return
+        if (previousMoves.length <= 0) {
+            //console.log("undo not performed");
+            return;
+        }
+
+        //If game is already over, undo game over
+        if (gameState !== GameState.inProgress) {
+            setGameState(GameState.inProgress);
+            setStrikeClass(null);
+        }
+
+        //Get the index of the last move made
+        const prev = previousMoves[previousMoves.length-1];
+
+        //Remove the last move from the squares on the board
+        const newSquares = [...squares];
+        newSquares[prev] = null;
+        setSquares(newSquares);
+
+        //Remove the last previous move from the previous moves array
+        setPreviousMoves(previousMoves.slice(0,previousMoves.length-1));
+        
+        //Change turn
+        if (playerTurn === PLAYER_X) {
+            setPlayerTurn(PLAYER_O);
+        }
+        else {
+            setPlayerTurn(PLAYER_X);
+        }
+
+        //console.log("undo performed.");
+    }
+
+    //useEffect to check for winner every time squares is updated
     useEffect(() => {
         checkWinner(squares, setStrikeClass, setGameState);
     }, [squares]);
@@ -105,8 +158,8 @@ function Game() {
             />
             <GameOver gameState={gameState}/>
             <div className="buttonSection">
-                <Undo/>
-                <Reset/>
+                <Undo onUndo={handleUndo}/>
+                <Reset onReset={handleReset}/>
             </div>
         </div>
     );
