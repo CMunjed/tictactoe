@@ -211,6 +211,9 @@ body {
   font-weight: bold;
   margin-top: 25px;
   margin-bottom: 30px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .bottomButton:hover {

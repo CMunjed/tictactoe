@@ -26,7 +26,7 @@ const winningCombos = [
 ];
 
 //Function to check if someone has won
-function checkWinner(squares, setStrikeClass, setGameState) {
+function checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick) {
     for (const {combo, strikeClass} of winningCombos) {
         const squareValue1 = squares[combo[0]];
         const squareValue2 = squares[combo[1]];
@@ -50,6 +50,48 @@ function checkWinner(squares, setStrikeClass, setGameState) {
         setGameState(GameState.draw);
     } 
 
+    handleAIMove(squares, gameState, playerTurn, handleClick);
+}
+
+async function handleAIMove(squares, gameState, playerTurn, handleClick) {
+
+    if (gameState === GameState.inProgress && playerTurn === PLAYER_O) {
+        //console.log("AI move happening");
+
+        let board = "";
+        for (let i = 0; i < squares.length; i++) {
+            if (squares[i] === null) {
+                board += "n";
+            }
+            else if (squares[i] === PLAYER_X) {
+                board += "X";
+            }
+            else {
+                board += "O";
+            }
+        }
+
+        console.log(board);
+
+        let pred = 0;
+        //Fetch prediction
+        await fetch('/api/predict/' + board)
+            .then(res => res.json()).then(data => {
+                //setTest(data.prediction);
+                pred = data.prediction;
+            });
+
+        //console.log("next...");
+
+        console.log('AI plays ' + pred);
+
+        setTimeout(function() {
+
+            //console.log('AI plays ' + pred);
+            handleClick(pred);
+
+        }, 750);
+    }
 }
 
 function Game() {
@@ -67,6 +109,20 @@ function Game() {
 
     //Var to store previous moves
     const [previousMoves, setPreviousMoves] = useState([]);
+
+    //Var to track whether user is playing against AI
+    const [usingAI, setUsingAI] = useState(false);
+
+    /*const [test, setTest] = useState(0);
+
+    useEffect(() => {
+        fetch('/api/predict/XOXOOXnnn')
+        .then(res => res.json()).then(data => {
+            setTest(data.prediction);
+        });
+        }, []);
+
+    console.log(test);*/
 
     //Handle when a square is clicked
     const handleClick = (index) => {
@@ -96,7 +152,67 @@ function Game() {
         const newPrev = [...previousMoves];
         newPrev[previousMoves.length] = index;
         setPreviousMoves(newPrev);
+
+        //console.log(playerTurn);
+        //handleAIMove();
     }
+
+    /*const squaresIsEmpty = () => {
+        for (let i = 0; i < squares.length; i++) {
+            if (squares[i] !== null) {
+                return false;
+            } 
+        }
+
+        return true;
+    }*/
+
+    /*useEffect(() => {
+        handleAIMove();
+    }, [squares]);*/
+
+    /*const handleAIMove = () => {
+        //console.log("handleAI called");
+
+        if (usingAI && gameState === GameState.inProgress && playerTurn === PLAYER_O) {
+        if (gameState === GameState.inProgress && playerTurn === PLAYER_O) {
+            //console.log("AI move happening");
+
+            let board = "";
+            for (let i = 0; i < squares.length; i++) {
+                if (squares[i] === null) {
+                    board += "n";
+                }
+                else if (squares[i] === PLAYER_X) {
+                    board += "X";
+                }
+                else {
+                    board += "O";
+                }
+            }
+
+            console.log(board);
+
+            let pred = 0;
+            //Fetch prediction
+            fetch('/api/predict/' + board)
+                .then(res => res.json()).then(data => {
+                    //setTest(data.prediction);
+                    pred = data.prediction;
+                });
+
+            //console.log("next...");
+
+            console.log('AI plays ' + pred);
+
+            setTimeout(function() {
+
+                //console.log('AI plays ' + pred);
+                handleClick(pred);
+
+            }, 750);
+        }
+    }*/
 
     //Function to handle the reset button
     const handleReset = () => {
@@ -144,7 +260,10 @@ function Game() {
 
     //useEffect to check for winner every time squares is updated
     useEffect(() => {
-        checkWinner(squares, setStrikeClass, setGameState);
+        checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick);
+        //handleAIMove is added as a callback at the end of checkWinner.
+        //handleAIMove(squares, gameState, playerTurn, handleClick);
+        
     }, [squares]);
 
     return (
