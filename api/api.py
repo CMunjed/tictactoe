@@ -9,7 +9,7 @@ import logging
 app = Flask(__name__)
 
 #Load model
-filename = 'mlp-clf.pkl'
+filename = 'mlp-reg-multi.pkl'
 try:
     model = pickle.load(open(filename, 'rb'))
     #print('model loaded')
@@ -30,17 +30,42 @@ def get_prediction(board):
     #app.logger.info(str(board))
 
     #Receive as string of x and o
-    arr = [0]*9
-    count = 0
+    game_board = [0]*9
+    i = 0
     for c in str(board):
         if c == 'X':
-            arr[count] = 1
+            game_board[i] = 1
         elif c == 'O':
-            arr[count] = -1
+            game_board[i] = -1
         else:
-            arr[count] = 0
-        count+=1
+            game_board[i] = 0
+        i+=1
 
-    prediction = int(np.around(model.predict([arr])[0], decimals=0))
+    # index for single-label prediction model
+    #prediction = int(np.around(model.predict([arr])[0], decimals=0))
     
-    return {'prediction': prediction}
+    # prediction, consists of confidence values
+    # for each 
+    pred = model.predict([game_board])[0]
+
+    # sort prediction array in order of highest
+    # confidence values
+    pred_sorted = np.sort(pred)
+    pred_sorted = pred_sorted[::-1]
+    #app.logger.info("pred: ", pred)
+    #app.logger.info("sorted: ", pred_sorted)
+
+    index = -1
+    for j in range(len(pred_sorted)):
+        # get index of highest confidence value
+        l = np.where(pred == pred_sorted[j])
+        # if that index is not played, serve that
+        # index
+        if game_board[int(l[0])] == 0:
+            index = int(l[0])
+            break
+
+    # single-label            
+    #return {'prediction': prediction}
+
+    return {'prediction': index}
