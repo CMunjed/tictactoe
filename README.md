@@ -55,6 +55,7 @@ The AI is a multi-layer perceptron neural network made with scikit-learn.<!-- th
 - [ ] Finish readme
 - [ ] Add option to switch gamemodes
 - [ ] Add difficulty levels
+- [ ] Deploy
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [product-screenshot]: images/screenshot.png
