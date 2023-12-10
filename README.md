@@ -31,28 +31,44 @@ The AI is a multi-layer perceptron neural network made with scikit-learn that pe
   ```sh
   npm install npm@latest -g
   ```
-* python
+* python >= 3.11
 
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/CMunjed/tictactoe.git
    ```
 2. Install NPM packages
    ```sh
    npm install
    ```
-3. 
+3. Create a virtual environment (optional)
+   ```sh
+   pip install virtualenv
+   cd api
+   python -m venv venv
+   venv\Scripts\activate
+   ```
+4. Install python requirements
+   ```sh
+   pip install -r requirements.txt
+   ```
 
 ### How to Run
 
-1. 
+1. Start front-end server
+   ```sh
+   npm run dev
+   ```
+2. Start back-end server
+   ```sh
+   npm run start-api
+   ```
 
 ## Roadmap
 
-- [ ] Finish readme
 - [ ] Disable hover effect on game end and when it's the AI's turn
 - [ ] Finishing touches
 - [ ] Deploy
