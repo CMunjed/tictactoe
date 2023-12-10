@@ -13,7 +13,7 @@ This web application, constructed with React, Vite, and Flask, allows the user t
 
 ### The AI
 
-The AI is a multi-layer perceptron neural network made with scikit-learn that performs multioutput regression on a provided tictactoe board. The board is represented as an array of 9 elements consisting of 0s and 1s, and the output similarly consists of 9 elements, with values representing the model's "confidence" in each position. The model is trained on a dataset of around 6500 tic-tac-toe games.  <!--  The jupyter notebook file in which the model was trained, the training dataset, and the model's pickle file can be found in {directory}. --> The model was found to be around 99% accurate when using measured using a custom scoring function that takes the highest confidence value that has not yet been played and compares it to the best plays in the dataset.
+The AI is a multi-layer perceptron neural network made with scikit-learn that performs multioutput regression on a provided tictactoe board. The board is represented as an array of 9 elements consisting of 0s and 1s, and the output similarly consists of 9 elements, with values representing the model's "confidence" in each position. The model is trained on a dataset of around 6500 tic-tac-toe games.  <!--  The jupyter notebook file in which the model was trained, the training dataset, and the model's pickle file can be found in {directory}. --> The model was found to be around 99% accurate when measured using a custom scoring function that takes the highest confidence value that has not yet been played and compares it to the best plays in the dataset.
 
 ### Built With
 
