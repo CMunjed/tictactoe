@@ -4,6 +4,9 @@ import GameOver from "./GameOver";
 import GameState from "./GameState";
 import Reset from "./Reset";
 import Undo from "./Undo";
+import GameMode from "./GameMode";
+import Difficulty from "./Difficulty";
+import DifficultyLevels from "./DifficultyLevels";
 
 const PLAYER_X = "X";
 const PLAYER_O = "O";
@@ -26,7 +29,7 @@ const winningCombos = [
 ];
 
 //Function to check if someone has won
-function checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick) {
+function checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick, usingAI, difficulty) {
     for (const {combo, strikeClass} of winningCombos) {
         const squareValue1 = squares[combo[0]];
         const squareValue2 = squares[combo[1]];
@@ -50,14 +53,15 @@ function checkWinner(squares, setStrikeClass, setGameState, gameState, playerTur
         setGameState(GameState.draw);
     } 
 
-    handleAIMove(squares, gameState, playerTurn, handleClick);
+    //handleAIMove(squares, gameState, playerTurn, handleClick);
+    if (usingAI && gameState === GameState.inProgress) {
+        handleAIMove(squares, playerTurn, handleClick, difficulty);
+    }
 }
 
-async function handleAIMove(squares, gameState, playerTurn, handleClick) {
+async function handleAIMove(squares, playerTurn, handleClick, difficulty) {
 
-    if (gameState === GameState.inProgress && playerTurn === PLAYER_O) {
-        //console.log("AI move happening");
-
+    if (/*gameState === GameState.inProgress &&*/playerTurn === PLAYER_O) {
         let board = "";
         for (let i = 0; i < squares.length; i++) {
             if (squares[i] === null) {
@@ -71,24 +75,45 @@ async function handleAIMove(squares, gameState, playerTurn, handleClick) {
             }
         }
 
-        console.log(board);
+        //console.log(board);
 
-        let pred = 0;
         //Fetch prediction
+        let pred = 0;
         await fetch('/api/predict/' + board)
             .then(res => res.json()).then(data => {
-                //setTest(data.prediction);
                 pred = data.prediction;
             });
+        
+        if (difficulty === DifficultyLevels.EASY) {
+            if (Math.floor(Math.random() * 10) > 5) {
+                let rand = Math.floor(Math.random() * 10);
+                while (squares[rand] !== null) {
+                    rand = Math.floor(Math.random() * 10);
+                }
+                pred = rand;
+            }
+        }
+        else if (difficulty === DifficultyLevels.MEDIUM) {
+            if (Math.floor(Math.random() * 10) > 7) {
+                let rand = Math.floor(Math.random() * 10);
+                while (squares[rand] !== null) {
+                    rand = Math.floor(Math.random() * 10);
+                }
+                pred = rand;
+            }
+        }
+        /*if ()
+        let rand = Math.floor(Math.random() * 10);
+        while (rand === pred) {
+            rand = Math.floor(Math.random() * 10);
+        }
+        pred = rand;*/
 
-        //console.log("next...");
-
-        console.log('AI plays ' + pred);
+        //console.log('AI plays ' + pred);
 
         setTimeout(function() {
 
-            //console.log('AI plays ' + pred);
-            handleClick(pred);
+            handleClick(pred, true);
 
         }, 750);
     }
@@ -111,21 +136,14 @@ function Game() {
     const [previousMoves, setPreviousMoves] = useState([]);
 
     //Var to track whether user is playing against AI
-    const [usingAI, setUsingAI] = useState(false);
+    const [usingAI, setUsingAI] = useState(true);
 
-    /*const [test, setTest] = useState(0);
+    //Difficulty
+    const [difficulty, setDifficulty] = useState(DifficultyLevels.HARD);
 
-    useEffect(() => {
-        fetch('/api/predict/XOXOOXnnn')
-        .then(res => res.json()).then(data => {
-            setTest(data.prediction);
-        });
-        }, []);
-
-    console.log(test);*/
 
     //Handle when a square is clicked
-    const handleClick = (index) => {
+    const handleClick = (index, AI) => {
         //If game is not in progress, return
         if (gameState !== GameState.inProgress) {
             return;
@@ -133,6 +151,12 @@ function Game() {
 
         //If the square is already occupied, ignore click
         if (squares[index] !== null) {
+            return;
+        }
+
+        //If AI mode is turned on and its not the player's turn
+        //AI parameter is false by default
+        if (!AI && usingAI && playerTurn === PLAYER_O) {
             return;
         }
 
@@ -153,66 +177,7 @@ function Game() {
         newPrev[previousMoves.length] = index;
         setPreviousMoves(newPrev);
 
-        //console.log(playerTurn);
-        //handleAIMove();
     }
-
-    /*const squaresIsEmpty = () => {
-        for (let i = 0; i < squares.length; i++) {
-            if (squares[i] !== null) {
-                return false;
-            } 
-        }
-
-        return true;
-    }*/
-
-    /*useEffect(() => {
-        handleAIMove();
-    }, [squares]);*/
-
-    /*const handleAIMove = () => {
-        //console.log("handleAI called");
-
-        if (usingAI && gameState === GameState.inProgress && playerTurn === PLAYER_O) {
-        if (gameState === GameState.inProgress && playerTurn === PLAYER_O) {
-            //console.log("AI move happening");
-
-            let board = "";
-            for (let i = 0; i < squares.length; i++) {
-                if (squares[i] === null) {
-                    board += "n";
-                }
-                else if (squares[i] === PLAYER_X) {
-                    board += "X";
-                }
-                else {
-                    board += "O";
-                }
-            }
-
-            console.log(board);
-
-            let pred = 0;
-            //Fetch prediction
-            fetch('/api/predict/' + board)
-                .then(res => res.json()).then(data => {
-                    //setTest(data.prediction);
-                    pred = data.prediction;
-                });
-
-            //console.log("next...");
-
-            console.log('AI plays ' + pred);
-
-            setTimeout(function() {
-
-                //console.log('AI plays ' + pred);
-                handleClick(pred);
-
-            }, 750);
-        }
-    }*/
 
     //Function to handle the reset button
     const handleReset = () => {
@@ -255,12 +220,45 @@ function Game() {
             setPlayerTurn(PLAYER_X);
         }
 
-        //console.log("undo performed.");
+    }
+
+    const handleToggleGameMode = (e) => {
+        handleReset();
+        if (usingAI) {
+            setUsingAI(false);
+            //e.currentTarget.querySelector('.twoplayer').style.display = 'block';
+            //e.currentTarget.querySelector('.ai').style.display = 'none';
+        }
+        else {
+            setUsingAI(true);
+            //e.currentTarget.querySelector('.twoplayer').style.display = 'none';
+            //e.currentTarget.querySelector('.ai').style.display = 'block';
+        }
+    }
+
+    const handleSetDifficulty = () => {
+        //If not using AI, no difficulty levels
+        if (!usingAI) {return;}
+
+        switch(difficulty) {
+            case (DifficultyLevels.EASY):
+                setDifficulty(DifficultyLevels.MEDIUM);
+                break;
+            case (DifficultyLevels.MEDIUM):
+                setDifficulty(DifficultyLevels.HARD);
+                break;
+            case (DifficultyLevels.HARD):
+                setDifficulty(DifficultyLevels.EASY);
+                break;
+            default:
+                setDifficulty(DifficultyLevels.HARD);
+                break;
+        }
     }
 
     //useEffect to check for winner every time squares is updated
     useEffect(() => {
-        checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick);
+        checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick, usingAI, difficulty);
         //handleAIMove is added as a callback at the end of checkWinner.
         //handleAIMove(squares, gameState, playerTurn, handleClick);
         
@@ -277,8 +275,14 @@ function Game() {
             />
             <GameOver gameState={gameState}/>
             <div className="buttonSection">
-                <Undo onUndo={handleUndo}/>
-                <Reset onReset={handleReset}/>
+                <div className="row">
+                    <Undo onUndo={handleUndo}/>
+                    <Reset onReset={handleReset}/>
+                    <GameMode onToggle={handleToggleGameMode} ai={usingAI}/>
+                </div>
+                <div className="row">
+                    <Difficulty difficulty={difficulty} onSet={handleSetDifficulty}/>
+                </div>
             </div>
         </div>
     );
