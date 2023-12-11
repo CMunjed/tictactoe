@@ -65,6 +65,7 @@ body {
   -webkit-user-select: none;
   user-select: none;
   /*object-fit: contain;*/
+  aspect-ratio: 1;
 }
 
 .square img.hide {
