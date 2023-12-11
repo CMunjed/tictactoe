@@ -5,55 +5,53 @@ import pickle
 import numpy as np
 import logging
 
+# from flask_cors import CORS
+
+# FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 app = Flask(__name__)
+# CORS(app, origins=[FRONT_END_URL])
 
-#Load model
-filename = 'mlp-reg-multi.pkl'
+# Load model
+filename = "mlp-reg-multi.pkl"
 try:
-    model = pickle.load(open(filename, 'rb'))
-    #print('model loaded')
-    app.logger.info('model loaded successfully')
+    model = pickle.load(open(filename, "rb"))
+    app.logger.info("model loaded successfully")
 except Exception as error:
-    #print('model could not be loaded')
-    app.logger.info('error: model could not be loaded')
+    app.logger.info("error: model could not be loaded")
     app.logger.info(error)
 
 
-@app.route('/api/time')
+@app.route("/api/time")
 def get_current_time():
-    #print('route called')
-    return {'time': time.strftime("%H:%M:%S", time.localtime())}
+    return {"time": time.strftime("%H:%M:%S", time.localtime())}
 
-@app.route('/api/predict/<board>')
+
+@app.route("/api/predict/<board>")
 def get_prediction(board):
-    #app.logger.info(str(board))
-
-    #Receive as string of x and o
-    game_board = [0]*9
+    # Receive as string of x and o
+    game_board = [0] * 9
     i = 0
     for c in str(board):
-        if c == 'X':
+        if c == "X":
             game_board[i] = 1
-        elif c == 'O':
+        elif c == "O":
             game_board[i] = -1
         else:
             game_board[i] = 0
-        i+=1
+        i += 1
 
     # index for single-label prediction model
-    #prediction = int(np.around(model.predict([arr])[0], decimals=0))
-    
+    # prediction = int(np.around(model.predict([arr])[0], decimals=0))
+
     # prediction, consists of confidence values
-    # for each 
+    # for each
     pred = model.predict([game_board])[0]
 
     # sort prediction array in order of highest
     # confidence values
     pred_sorted = np.sort(pred)
     pred_sorted = pred_sorted[::-1]
-    #app.logger.info("pred: ", pred)
-    #app.logger.info("sorted: ", pred_sorted)
 
     index = -1
     for j in range(len(pred_sorted)):
@@ -65,7 +63,7 @@ def get_prediction(board):
             index = int(l[0])
             break
 
-    # single-label            
-    #return {'prediction': prediction}
+    # single-label
+    # return {'prediction': prediction}
 
-    return {'prediction': index}
+    return {"prediction": index}
