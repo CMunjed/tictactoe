@@ -4,13 +4,12 @@ import sklearn
 import pickle
 import numpy as np
 import logging
+from flask_cors import CORS
 
-# from flask_cors import CORS
-
-# FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
+FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 app = Flask(__name__)
-# CORS(app, origins=[FRONT_END_URL])
+CORS(app, origins=[FRONT_END_URL])
 
 # Load model
 filename = "mlp-reg-multi.pkl"
