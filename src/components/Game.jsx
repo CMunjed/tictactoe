@@ -52,10 +52,11 @@ function checkWinner(squares, setStrikeClass, setGameState, gameState, playerTur
     if (allSquaresAreFilled) {
         setGameState(GameState.draw);
     } 
-
-    //handleAIMove(squares, gameState, playerTurn, handleClick);
-    if (usingAI && gameState === GameState.inProgress) {
-        handleAIMove(squares, playerTurn, handleClick, difficulty);
+    else {
+        //handleAIMove(squares, gameState, playerTurn, handleClick);
+        if (usingAI && gameState === GameState.inProgress) {
+            handleAIMove(squares, playerTurn, handleClick, difficulty);
+        }
     }
 }
 
