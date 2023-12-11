@@ -9,7 +9,7 @@ from flask_cors import CORS
 FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 app = Flask(__name__)
-CORS(app, origins=[FRONT_END_URL])
+CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 
 # Load model
 filename = "mlp-reg-multi.pkl"
