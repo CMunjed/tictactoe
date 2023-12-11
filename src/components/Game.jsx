@@ -116,7 +116,7 @@ async function handleAIMove(squares, playerTurn, handleClick, difficulty) {
 
             handleClick(pred, true);
 
-        }, 750);
+        }, 100);
     }
 }
 
