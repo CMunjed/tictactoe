@@ -196,29 +196,49 @@ function Game() {
             return;
         }
 
+        //Don't allow undo if playing AI and it's the AI's turn, or if less than 2 moves have been played
+        if (((playerTurn === PLAYER_O && gameState === GameState.inProgress) || previousMoves.length < 2) && usingAI) {
+            return;
+        }
+
+        let oldGameState = gameState;
+
         //If game is already over, undo game over
         if (gameState !== GameState.inProgress) {
             setGameState(GameState.inProgress);
             setStrikeClass(null);
         }
 
-        //Get the index of the last move made
-        const prev = previousMoves[previousMoves.length-1];
+        if (!usingAI || oldGameState === GameState.draw) { // 2-player undo logic (also used if draw)
+            //Get the index of the last move made
+            const prev = previousMoves[previousMoves.length-1];
 
-        //Remove the last move from the squares on the board
-        const newSquares = [...squares];
-        newSquares[prev] = null;
-        setSquares(newSquares);
+            //Remove the last move from the squares on the board
+            const newSquares = [...squares];
+            newSquares[prev] = null;
+            setSquares(newSquares);
 
-        //Remove the last previous move from the previous moves array
-        setPreviousMoves(previousMoves.slice(0,previousMoves.length-1));
-        
-        //Change turn
-        if (playerTurn === PLAYER_X) {
-            setPlayerTurn(PLAYER_O);
+            //Remove the last previous move from the previous moves array
+            setPreviousMoves(previousMoves.slice(0,previousMoves.length-1));
+            
+            //Change turn
+            if (playerTurn === PLAYER_X) {
+                setPlayerTurn(PLAYER_O);
+            }
+            else {
+                setPlayerTurn(PLAYER_X);
+            }
         }
-        else {
-            setPlayerTurn(PLAYER_X);
+        else { // AI undo logic
+            const prev1 = previousMoves[previousMoves.length-1];
+            const prev2 = previousMoves[previousMoves.length-2];
+
+            const newSquares = [...squares];
+            newSquares[prev1] = null;
+            newSquares[prev2] = null;
+            setSquares(newSquares);
+
+            setPreviousMoves(previousMoves.slice(0,previousMoves.length-2));
         }
 
     }
