@@ -19,6 +19,9 @@ function Square({ value, onClick, playerTurn }) {
         );
     }
 
+    //Consider passing gameState, playerTurn, and usingAI here
+    // to eliminate hover effect on game end and when it's the AI's turn
+
     //If no value is in the square
     //  Handle hovering preview
     if (playerTurn === "X") {

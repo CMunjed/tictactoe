@@ -77,9 +77,9 @@ The AI is a multi-layer perceptron neural network made with scikit-learn that pe
 ## Roadmap
 
 - [ ] Disable hover effect on game end and when it's the AI's turn
-- [ ] Fix responsive design, especially on mobile
-- [ ] Adjust difficulty so it doesn't use random values to guess wrong but returns a value with lower confidence
-- [ ] Fix Undo button so that when playing against AI, it undos 2 moves
+- [ ] Add responsive design for page height
+- [ ] Adjust difficulty to be based on lower confidence values instead of pure random
+- [ ] Fix cold start issue with backend Vercel deployment
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [product-screenshot]: images/screenshot.png
