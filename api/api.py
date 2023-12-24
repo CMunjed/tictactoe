@@ -1,9 +1,9 @@
-import time
+#import time
 from flask import Flask
-import sklearn
+#import sklearn
 import pickle
 import numpy as np
-import logging
+#import logging
 from flask_cors import CORS
 
 FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
@@ -15,15 +15,20 @@ CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 filename = "mlp-reg-multi.pkl"
 try:
     model = pickle.load(open(filename, "rb"))
-    app.logger.info("model loaded successfully")
+    #app.logger.info("model loaded successfully")
 except Exception as error:
-    app.logger.info("error: model could not be loaded")
-    app.logger.info(error)
+    pass   # do nothing
+    #app.logger.info("error: model could not be loaded")
+    #app.logger.info(error)
 
 
-@app.route("/api/time")
-def get_current_time():
-    return {"time": time.strftime("%H:%M:%S", time.localtime())}
+#@app.route("/api/time")
+#def get_current_time():
+#    return {"time": time.strftime("%H:%M:%S", time.localtime())}
+
+@app.route("/api/test")
+def get_test():
+    return {"test": True}
 
 
 @app.route("/api/predict/<board>")
