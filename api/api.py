@@ -1,4 +1,3 @@
-#import time
 from flask import Flask, request
 #import sklearn
 import pickle
@@ -13,24 +12,6 @@ FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 app = Flask(__name__)
 CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
-
-#logging.basicConfig(level=logging.DEBUG)
-#app.logger.info('test')
-
-# Load model
-#filename = "mlp-reg-multi.pkl"
-#try:
-#    model = pickle.load(open(filename, "rb"))
-#    #app.logger.info("model loaded successfully")
-#except Exception as error:
-#    pass   # do nothing
-    #app.logger.info("error: model could not be loaded")
-    #app.logger.info(error)
-
-
-#@app.route("/api/time")
-#def get_current_time():
-#    return {"time": time.strftime("%H:%M:%S", time.localtime())}
 
 
 # To use and validate base models with routes, use Flask-Pydantic
@@ -49,12 +30,8 @@ def get_test():
 def get_best_prediction():
     # Receive as string of x and o
 
-    #app.logger.info(request.json)
-    #app.logger.info(request.json['board'])
-
     board = request.json['board']
-    #if board == "":
-    #    return{"Error": None}
+    # Verify json body?
 
     game_board = [0] * 9
     i = 0

@@ -11,7 +11,7 @@ import DifficultyLevels from "./DifficultyLevels";
 const PLAYER_X = "X";
 const PLAYER_O = "O";
 
-//Var to store winning tictactoe combinations
+//Var to store winning tictactoe combinations and corresponding strike-through
 const winningCombos = [
     //Rows
     {combo:[0,1,2], strikeClass: "strike-row-1"},
@@ -76,8 +76,6 @@ async function handleAIMove(squares, playerTurn, handleClick, difficulty) {
             }
         }
 
-        //console.log(board);
-
         //Fetch prediction
         let pred = 0;
         const requestOptions = {
@@ -87,15 +85,12 @@ async function handleAIMove(squares, playerTurn, handleClick, difficulty) {
                 board: board,
             }),
         };
-        //await fetch('/api/predict/' + board)
-        //    .then(res => res.json()).then(data => {
-        //        pred = data.prediction;
-        //    });
         await fetch('/api/predict', requestOptions)
             .then(res => res.json()).then(data => {
                 pred = data.prediction;
             });
         
+        //Adjust for difficulty
         if (difficulty === DifficultyLevels.EASY) {
             if (Math.floor(Math.random() * 10) > 5) {
                 let rand = Math.floor(Math.random() * 10);
@@ -114,14 +109,6 @@ async function handleAIMove(squares, playerTurn, handleClick, difficulty) {
                 pred = rand;
             }
         }
-        /*if ()
-        let rand = Math.floor(Math.random() * 10);
-        while (rand === pred) {
-            rand = Math.floor(Math.random() * 10);
-        }
-        pred = rand;*/
-
-        //console.log('AI plays ' + pred);
 
         setTimeout(function() {
 
@@ -258,13 +245,9 @@ function Game() {
         handleReset();
         if (usingAI) {
             setUsingAI(false);
-            //e.currentTarget.querySelector('.twoplayer').style.display = 'block';
-            //e.currentTarget.querySelector('.ai').style.display = 'none';
         }
         else {
             setUsingAI(true);
-            //e.currentTarget.querySelector('.twoplayer').style.display = 'none';
-            //e.currentTarget.querySelector('.ai').style.display = 'block';
         }
     }
 
@@ -291,9 +274,7 @@ function Game() {
     //useEffect to check for winner every time squares is updated
     useEffect(() => {
         checkWinner(squares, setStrikeClass, setGameState, gameState, playerTurn, handleClick, usingAI, difficulty);
-        //handleAIMove is added as a callback at the end of checkWinner.
-        //handleAIMove(squares, gameState, playerTurn, handleClick);
-        
+        //handleAIMove is added as a callback at the end of checkWinner.  
     }, [squares]);
 
     return (

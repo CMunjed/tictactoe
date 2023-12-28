@@ -23,9 +23,6 @@ function GameOver({ gameState }) {
         default:
             return (<></>);
     }
-    /*return (
-        <div>Game Over</div>
-    );*/
 }
 
 export default GameOver;

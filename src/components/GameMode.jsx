@@ -14,12 +14,6 @@ function GameMode({ onToggle, ai }) {
             );
     }
     return (<></>);
-    /*return (
-        <div className="bottomButton gamemode" onClick={onToggle}>
-            <div className="ai">AI</div>
-            <div className="twoplayer">2-Player</div>
-        </div>
-    );*/
 }
 
 export default GameMode;

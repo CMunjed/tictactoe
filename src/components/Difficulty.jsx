@@ -27,12 +27,6 @@ function Difficulty({difficulty, onSet}) {
                 </div>
             );
     }
-    /*return (  
-        <div className="bottomButton difficulty">
-                Difficulty:&nbsp;
-                <span className="easy"></span>
-        </div>
-    );*/
 }
 
 export default Difficulty;
