@@ -80,7 +80,18 @@ async function handleAIMove(squares, playerTurn, handleClick, difficulty) {
 
         //Fetch prediction
         let pred = 0;
-        await fetch('/api/predict/' + board)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                board: board,
+            }),
+        };
+        //await fetch('/api/predict/' + board)
+        //    .then(res => res.json()).then(data => {
+        //        pred = data.prediction;
+        //    });
+        await fetch('/api/predict', requestOptions)
             .then(res => res.json()).then(data => {
                 pred = data.prediction;
             });
