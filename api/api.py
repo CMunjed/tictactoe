@@ -1,18 +1,18 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 #import sklearn
 import pickle
 import numpy as np
 #import logging
 #from pydantic import BaseModel
-from flask_cors import CORS
+#from flask_cors import CORS
 from model.model import model
 from model.model import __version__ as model_version
 
-FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
+#FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
-app = Flask(__name__)
-CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
-
+app = Flask(__name__, static_folder='../dist', static_url_path='/')
+#app = Flask(__name__)
+#CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 
 # To use and validate base models with routes, use Flask-Pydantic
 #class BoardIn(BaseModel):
@@ -20,6 +20,12 @@ CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 
 #class PredictionOut():
 #    pred: int
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 
 @app.route("/api/status")
 def get_test():
@@ -61,3 +67,7 @@ def get_best_prediction():
             break
 
     return {"prediction": index}
+
+
+if __name__ == '__main__':
+    app.run()
