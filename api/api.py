@@ -5,12 +5,27 @@ import numpy as np
 #import logging
 #from pydantic import BaseModel
 #from flask_cors import CORS
+
+#from pathlib import Path
+import os
+import sys
+#import imp
+
+#BASE_DIR = Path(__file__).resolve(strict=True).parent
+#model_path = os.path.join(BASE_DIR, 'model', 'model.py')
+#m = imp.load_source("model", model_path)
+#model = m.model
+#model_version = imp.load_source("__version__", model_path)
+
+if os.environ.get('VERCEL') == 1:
+    sys.path.append(os.path.dirname(__file__))
+
 from model.model import model
 from model.model import __version__ as model_version
 
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
-app = Flask(__name__, static_folder='../dist', static_url_path='/')
+app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
 #app = Flask(__name__)
 #CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 
