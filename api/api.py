@@ -26,6 +26,9 @@ from model.model import __version__ as model_version
 
 print(model_version)
 
+for name, value in os.environ.items():
+    print("{0}: {1}".format(name, value))
+
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
