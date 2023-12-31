@@ -30,7 +30,7 @@ app = Flask(__name__, static_folder=build_path, template_folder=build_path, stat
 
 @app.route('/')
 def index():
-    if os.path.exists(build_path):
+    if os.path.exists(build_path) or os.environ.get('VERCEL') == '1':
         return render_template('index.html')
     else:
         return {"error": "build not found, run 'npm run build' to serve front-end build from this route"}
