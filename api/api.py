@@ -24,12 +24,12 @@ if os.environ.get('VERCEL') == '1':
 from model.model import model
 from model.model import __version__ as model_version
 
-#print(os.listdir(os.getcwd()))
+print(os.listdir(os.getcwd()))
 
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 #p = os.path.join('..', os.path.basename(os.getcwd()))
-p = os.path.dirname(os.path.dirname(__file__))
+p = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dist')
 print(p)
 
 if os.environ.get('VERCEL') == '1':
