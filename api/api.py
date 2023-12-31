@@ -17,21 +17,19 @@ import sys
 #model = m.model
 #model_version = imp.load_source("__version__", model_path)
 
-sys.path.append(os.path.dirname(__file__))
-
-print(sys.path)
+# Work-around for Vercel, add model's path to system path
+if os.environ.get('VERCEL') == '1':
+    sys.path.append(os.path.dirname(__file__))
 
 from model.model import model
 from model.model import __version__ as model_version
 
-print(model_version)
-
-for name, value in os.environ.items():
-    print("{0}: {1}".format(name, value))
-
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
-app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
+if os.environ.get('VERCEL') == '1':
+    app = Flask(__name__, static_folder='dist', template_folder='dist', static_url_path='/')
+else:
+    app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
 #app = Flask(__name__)
 #CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 
