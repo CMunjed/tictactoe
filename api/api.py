@@ -24,6 +24,8 @@ if os.environ.get('VERCEL') == '1':
 from model.model import model
 from model.model import __version__ as model_version
 
+print(os.listdir)
+
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 if os.environ.get('VERCEL') == '1':
