@@ -29,13 +29,13 @@ print(os.listdir(os.getcwd()))
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 #p = os.path.join('..', os.path.basename(os.getcwd()))
-p = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dist')
-print(p)
+#p = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dist')
+#print(p)
 
-if os.environ.get('VERCEL') == '1':
-    app = Flask(__name__, static_folder=p, template_folder=p, static_url_path='/')
-else:
-    app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
+#if os.environ.get('VERCEL') == '1':
+#    app = Flask(__name__, static_folder=p, template_folder=p, static_url_path='/')
+##else:
+app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
 #app = Flask(__name__)
 #CORS(app, origins=[FRONT_END_URL, "http://localhost:5173"])
 
