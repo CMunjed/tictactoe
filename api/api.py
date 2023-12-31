@@ -29,7 +29,7 @@ print(os.listdir(os.getcwd()))
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
 if os.environ.get('VERCEL') == '1':
-    app = Flask(__name__, static_folder='dist', template_folder='dist', static_url_path='/')
+    app = Flask(__name__, static_folder='/', template_folder='/', static_url_path='/')
 else:
     app = Flask(__name__, static_folder='../dist', template_folder='../dist', static_url_path='/')
 #app = Flask(__name__)
