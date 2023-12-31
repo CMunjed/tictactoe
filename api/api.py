@@ -17,8 +17,7 @@ import sys
 #model = m.model
 #model_version = imp.load_source("__version__", model_path)
 
-if os.environ.get('VERCEL') == 1:
-    sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(__file__))
 
 print(sys.path)
 
