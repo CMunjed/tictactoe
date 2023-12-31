@@ -28,7 +28,7 @@ from model.model import __version__ as model_version
 
 #FRONT_END_URL = "https://tictactoe-seven-smoky.vercel.app/"
 
-p = os.path.join(os.path.basename(os.getcwd()))
+p = os.path.join('..', os.path.basename(os.getcwd()))
 print(p)
 
 if os.environ.get('VERCEL') == '1':
