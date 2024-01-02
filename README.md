@@ -73,14 +73,25 @@ The AI is a multi-layer perceptron neural network made with scikit-learn that pe
    ```sh
    npm run start-api
    ```
+3. Visit http://localhost:5173/
+
+Or, to use the api to serve the front-end files,
+
+1. Build front-end files
+   ```sh
+   npm run build
+   ```
+2. Start back-end server
+   ```sh
+   npm run start-api
+   ```
+3. Visit http://localhost:8080/
 
 ## Roadmap
 
-- [ ] Disable hover effect on game end and when it's the AI's turn
+- [ ] Adjust hover effect on game end and when it's the AI's turn
 - [ ] Add responsive design for page height
-- [ ] Adjust difficulty to be based on lower confidence values instead of pure random
-- [ ] Fix cold start issue with backend Vercel deployment
-- [ ] Clean up code
+- [ ] Adjust difficulty algorithm to use lower confidence values instead of random
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [product-screenshot]: images/screenshot.png
